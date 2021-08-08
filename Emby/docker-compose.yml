@@ -1,0 +1,18 @@
+version: "2"
+  services:
+  emby:
+      image: linuxserver/emby
+      container_name: emby
+      environment:
+        - PUID=998
+        - PGID=100
+        - TZ=America/Caracas
+        - UMASK_SET=022 #optional
+      volumes:
+        - ~/Configs/Emby:/config
+        - ~/TV:/data/tvshows
+        - ~/Movies:/data/movies
+      ports:
+        - 8096:8096
+        - 8920:8920 #optional for secure connections
+      restart: unless-stopped

@@ -18,8 +18,8 @@ services:
     image: linuxserver/emby
     container_name: emby
     environment:
-      - PUID=998
-      - PGID=100
+      - PUID=1000
+      - PGID=1000
       - TZ=America/Caracas
       - UMASK_SET=022 #optional
     volumes:
@@ -35,8 +35,8 @@ services:
     image: ghcr.io/linuxserver/embystat
     container_name: embystat
     environment:
-      - PUID=998
-      - PGID=100
+      - PUID=1000
+      - PGID=1000
       - TZ=America/Caracas
     volumes:
       - ~/Configs/EmbyStat:/config
@@ -48,8 +48,8 @@ services:
     image: linuxserver/jackett
     container_name: jackett
     environment:
-      - PUID=998
-      - PGID=100
+      - PUID=1000
+      - PGID=1000
       - TZ=America/Caracas
     volumes:
       - ~/Configs/Jackett:/config
@@ -75,12 +75,22 @@ services:
       - 8080:8080
     restart: unless-stopped
 
+  jdownloader-2:
+    image: jlesage/jdownloader-2
+    container_name: jdownloader-2
+    ports:
+      - 5800:5800
+    volumes:
+      - ~/Configs/jdownloader-2:/config:rw
+      - ~/Downloads:/output:rw
+    restart: unless-stopped
+
   radarr:
     image: linuxserver/radarr
     container_name: radarr
     environment:
-      - PUID=998
-      - PGID=100
+      - PUID=1000
+      - PGID=1000
       - TZ=America/Caracas
       - UMASK_SET=022 #optional
     volumes:
@@ -94,8 +104,8 @@ services:
     image: linuxserver/sonarr
     container_name: sonarr
     environment:
-      - PUID=998
-      - PGID=100
+      - PUID=1000
+      - PGID=1000
       - TZ=America/Caracas
       - UMASK_SET=022
     volumes:
@@ -106,44 +116,44 @@ services:
       - 8989:8989
     restart: unless-stopped
 
-  # System Monitoring
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    environment:
-      - PUID=998
-      - PGID=100
-      - TZ=America/Caracas
-      - UMASK_SET=022
-    volumes:
-      - ~/Configs/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - 9292:9090
-    restart: unless-stopped
+  # System Monitoring - Uncomment if needed
+  # prometheus:
+  #   image: prom/prometheus
+  #   container_name: prometheus
+  #   environment:
+  #     - PUID=998
+  #     - PGID=100
+  #     - TZ=America/Caracas
+  #     - UMASK_SET=022
+  #   volumes:
+  #     - ~/Configs/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  #   ports:
+  #     - 9292:9090
+  #   restart: unless-stopped
 
-  node-exporter:
-    image: quay.io/prometheus/node-exporter:latest
-    container_name: node-exporter
-    network_mode: host
-    environment:
-      - PUID=998
-      - PGID=100
-      - TZ=America/Caracas
-      - UMASK_SET=022
-    volumes:
-      - /:/host:ro,rslave
-    ports:
-      - 9100:9090
-    restart: unless-stopped
+  # node-exporter:
+  #   image: quay.io/prometheus/node-exporter:latest
+  #   container_name: node-exporter
+  #   network_mode: host
+  #   environment:
+  #     - PUID=998
+  #     - PGID=100
+  #     - TZ=America/Caracas
+  #     - UMASK_SET=022
+  #   volumes:
+  #     - /:/host:ro,rslave
+  #   ports:
+  #     - 9100:9090
+  #   restart: unless-stopped
 
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    environment:
-      - PUID=998
-      - PGID=100
-      - TZ=America/Caracas
-      - UMASK_SET=022
-    ports:
-      - 3000:3000
-    restart: unless-stopped
+  # grafana:
+  #   image: grafana/grafana
+  #   container_name: grafana
+  #   environment:
+  #     - PUID=998
+  #     - PGID=100
+  #     - TZ=America/Caracas
+  #     - UMASK_SET=022
+  #   ports:
+  #     - 3000:3000
+  #   restart: unless-stopped

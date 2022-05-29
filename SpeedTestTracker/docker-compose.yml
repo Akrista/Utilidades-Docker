@@ -9,8 +9,8 @@ services:
       - ~/Configs/speedtest-tracker:/config
     environment:
       - TZ=America/Caracas
-      - PGID=100
-      - PUID=998
+      - PGID=1000
+      - PUID=1000
       - OOKLA_EULA_GDPR=true
     logging:
       driver: "json-file"

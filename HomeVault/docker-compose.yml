@@ -31,18 +31,18 @@ services:
       - 8920:8920 #optional for secure connections
     restart: unless-stopped
 
-  embystat:
-    image: ghcr.io/linuxserver/embystat
-    container_name: embystat
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Caracas
-    volumes:
-      - ~/Configs/EmbyStat:/config
-    ports:
-      - 6555:6555
-    restart: unless-stopped
+    #  embystat:
+    #    image: ghcr.io/linuxserver/embystat
+    #    container_name: embystat
+    #    environment:
+    #      - PUID=1000
+    #      - PGID=1000
+    #      - TZ=America/Caracas
+    #    volumes:
+    #      - ~/Configs/EmbyStat:/config
+    #    ports:
+    #      - 6555:6555
+    #    restart: unless-stopped
 
   jackett:
     image: linuxserver/jackett

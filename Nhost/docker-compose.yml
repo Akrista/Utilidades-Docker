@@ -15,7 +15,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
   postgres:
     image: postgres
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./data/db:/var/lib/postgresql/data
       - ./initdb.d:/docker-entrypoint-initdb.d:ro
@@ -27,7 +27,7 @@ services:
     image: hasura/graphql-engine:v2.2.0
     depends_on:
       - "postgres"
-    restart: always
+    restart: unless-stopped
     expose:
       - 8080
     environment:
@@ -46,7 +46,7 @@ services:
     depends_on:
       - postgres
       - graphql-engine
-    restart: always
+    restart: unless-stopped
     environment:
       AUTH_HOST: "0.0.0.0"
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-secretpgpassword}@postgres:5432/postgres
@@ -75,7 +75,7 @@ services:
       - postgres
       - graphql-engine
       - minio
-    restart: always
+    restart: unless-stopped
     expose:
       - 8000
     healthcheck:
@@ -108,7 +108,7 @@ services:
       - "traefik.http.routers.functions.rule=Host(`localhost`) && PathPrefix(`/v1/functions`)"
       - "traefik.http.routers.functions.middlewares=strip-functions@docker"
       - "traefik.http.routers.functions.entrypoints=web"
-    restart: always
+    restart: unless-stopped
     expose:
       - 3000
     healthcheck:

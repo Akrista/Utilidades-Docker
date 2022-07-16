@@ -22,8 +22,8 @@ services:
     restart: unless-stopped
     #! Change ports here
     ports:
-      - 80:80
-      - 443:443
+      - 4375:80
+      - 4576:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - appwrite-config:/storage/config:ro

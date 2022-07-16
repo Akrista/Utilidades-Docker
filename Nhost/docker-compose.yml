@@ -13,25 +13,25 @@ services:
       - "9090:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-  postgres:
-    image: postgres
-    restart: unless-stopped
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-      - ./initdb.d:/docker-entrypoint-initdb.d:ro
-    environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secretpgpassword}
-    ports:
-      - "5432:5432"
+  # postgres:
+  #   image: postgres
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./data/db:/var/lib/postgresql/data
+  #     - ./initdb.d:/docker-entrypoint-initdb.d:ro
+  #   environment:
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secretpgpassword}
+  #   ports:
+  #     - "5432:5432"
   graphql-engine:
     image: hasura/graphql-engine:v2.2.0
-    depends_on:
-      - "postgres"
+    # depends_on:
+    #   - "postgres"
     restart: unless-stopped
     expose:
       - 8080
     environment:
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-secretpgpassword}@postgres:5432/postgres
+      HASURA_GRAPHQL_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
       HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: public
@@ -44,12 +44,12 @@ services:
   auth:
     image: nhost/hasura-auth:latest
     depends_on:
-      - postgres
+      # - postgres
       - graphql-engine
     restart: unless-stopped
     environment:
       AUTH_HOST: "0.0.0.0"
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-secretpgpassword}@postgres:5432/postgres
+      HASURA_GRAPHQL_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
       HASURA_GRAPHQL_GRAPHQL_URL: http://graphql-engine:8080/v1/graphql
       HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
@@ -72,7 +72,7 @@ services:
   storage:
     image: nhost/hasura-storage:0.2.1
     depends_on:
-      - postgres
+      # - postgres
       - graphql-engine
       - minio
     restart: unless-stopped
@@ -81,7 +81,7 @@ services:
     healthcheck:
       disable: true
     environment:
-      PUBLIC_URL: http://localhost:${PROXY_PORT:-1337}
+      PUBLIC_URL: http://192.168.1.4:${PROXY_PORT:-1337}
       HASURA_METADATA: 1
       HASURA_ENDPOINT: http://graphql-engine:8080/v1
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
@@ -90,7 +90,7 @@ services:
       S3_ENDPOINT: http://minio:8484
       S3_BUCKET: nhost
       POSTGRES_MIGRATIONS: 1
-      POSTGRES_MIGRATIONS_SOURCE: postgres://postgres:${POSTGRES_PASSWORD:-secretpgpassword}@postgres:5432/postgres?sslmode=disable
+      POSTGRES_MIGRATIONS_SOURCE: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.storage.rule=Host(`localhost`) && PathPrefix(`/v1/storage`)"

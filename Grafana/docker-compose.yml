@@ -1,0 +1,16 @@
+version: "2"
+services:
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    environment:
+      - TZ=America/Caracas
+      - UMASK_SET=022
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    ports:
+      - 3000:3000
+    user: 1000:1000
+    volumes:
+      - /home/$USER/Grafana:/var/lib/grafana
+    restart: unless-stopped
+# Default user and passwd admin:admin

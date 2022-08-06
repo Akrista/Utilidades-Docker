@@ -1,162 +1,28 @@
 ---
 version: "2"
 services:
-  heimdall:
-    image: ghcr.io/linuxserver/heimdall
-    container_name: heimdall
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Caracas
-    volumes:
-      - ~/Configs/Heimdall:/config
-    ports:
-      - 80:80
-    restart: unless-stopped
-
-  emby:
-    image: linuxserver/emby
-    container_name: emby
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Caracas
-      - UMASK_SET=022 #optional
-    volumes:
-      - ~/Configs/Emby:/config
-      - ~/TV:/data/tvshows
-      - ~/Movies:/data/movies
-    ports:
-      - 8096:8096
-      - 8920:8920 #optional for secure connections
-    restart: unless-stopped
-
-    #  embystat:
-    #    image: ghcr.io/linuxserver/embystat
-    #    container_name: embystat
-    #    environment:
-    #      - PUID=1000
-    #      - PGID=1000
-    #      - TZ=America/Caracas
-    #    volumes:
-    #      - ~/Configs/EmbyStat:/config
-    #    ports:
-    #      - 6555:6555
-    #    restart: unless-stopped
-
-  jackett:
-    image: linuxserver/jackett
-    container_name: jackett
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Caracas
-    volumes:
-      - ~/Configs/Jackett:/config
-      - ~/Torrents:/downloads
-    ports:
-      - 9117:9117
-    restart: unless-stopped
-
-  qbittorrent:
-    image: ghcr.io/linuxserver/qbittorrent
-    container_name: qbittorrent
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Caracas
-      - WEBUI_PORT=8080
-    volumes:
-      - ~/Configs/QBitorrent:/config
-      - ~/Torrents:/downloads
-    ports:
-      - 6881:6881
-      - 6881:6881/udp
-      - 8080:8080
-    restart: unless-stopped
-
-  jdownloader-2:
-    image: jlesage/jdownloader-2
-    container_name: jdownloader-2
-    environment:
-      - PUID=1000
-      - PGID=1000
-    ports:
-      - 5800:5800
-    volumes:
-      - ~/Configs/jdownloader-2:/config:rw
-      - ~/Downloads:/output:rw
-    restart: unless-stopped
-
-  radarr:
-    image: linuxserver/radarr
-    container_name: radarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Caracas
-      - UMASK_SET=022 #optional
-    volumes:
-      - ~/Configs/Radarr:/config
-      - ~/Movies:/movies
-      - ~/Torrents:/downloads
-    ports:
-      - 7878:7878
-    restart: unless-stopped
-  sonarr:
-    image: linuxserver/sonarr
-    container_name: sonarr
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/Caracas
       - UMASK_SET=022
     volumes:
-      - ~/Configs/Sonarr:/config
-      - ~/TV:/tv
-      - ~/Torrents:/downloads
+      - /home/$USER/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
-      - 8989:8989
+      - 9292:9090
     restart: unless-stopped
 
-  # System Monitoring - Uncomment if needed
-  # prometheus:
-  #   image: prom/prometheus
-  #   container_name: prometheus
-  #   environment:
-  #     - PUID=998
-  #     - PGID=100
-  #     - TZ=America/Caracas
-  #     - UMASK_SET=022
-  #   volumes:
-  #     - ~/Configs/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-  #   ports:
-  #     - 9292:9090
-  #   restart: unless-stopped
-
-  # node-exporter:
-  #   image: quay.io/prometheus/node-exporter:latest
-  #   container_name: node-exporter
-  #   network_mode: host
-  #   environment:
-  #     - PUID=998
-  #     - PGID=100
-  #     - TZ=America/Caracas
-  #     - UMASK_SET=022
-  #   volumes:
-  #     - /:/host:ro,rslave
-  #   ports:
-  #     - 9100:9090
-  #   restart: unless-stopped
-
-  # grafana:
-  #   image: grafana/grafana
-  #   container_name: grafana
-  #   environment:
-  #     - PUID=998
-  #     - PGID=100
-  #     - TZ=America/Caracas
-  #     - UMASK_SET=022
-  #   ports:
-  #     - 3000:3000
-  #   restart: unless-stopped
+  prometheus_pushgateway:
+    image: prom/pushgateway
+    container_name: prometheus_pushgateway
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Caracas
+      - UMASK_SET=022
+    ports:
+      - 9091:9091
+    restart: unless-stopped

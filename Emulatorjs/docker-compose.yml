@@ -1,0 +1,19 @@
+---
+version: "2.1"
+services:
+  emulatorjs:
+    image: lscr.io/linuxserver/emulatorjs:latest
+    container_name: emulatorjs
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Caracas
+      # - SUBFOLDER=/ #optional
+    volumes:
+      - /home/$USER/EmulatorJs/config:/config
+      - /home/$USER/EmulatorJs/data:/data
+    ports:
+      - 3003:3000
+      - 8005:80
+      - 4006:4001 #optional
+    restart: unless-stopped

@@ -1,0 +1,17 @@
+version: "3"
+# name: MSSQL
+services:
+  mssqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=yourpassword
+      - TZ=America/Caracas
+    hostname: mssqlserver
+    user: root
+    #When using volumes is best to set user root cause microsoft doesn't know how to properly set PID and GID...
+    volumes:
+      - /home/$USER/MSSQL:/var/opt/mssql
+    restart: unless-stopped

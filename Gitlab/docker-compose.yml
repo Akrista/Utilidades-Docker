@@ -1,8 +1,9 @@
 version: "3"
 services:
-  prometheus:
+  gitlab:
     image: gitlab/gitlab-ce
     container_name: gitlab
+    hostname: "your.hostname.com:port"
     environment:
       - TZ=America/Caracas
     volumes:
@@ -14,3 +15,4 @@ services:
       - 80:80
       - 443:443
     restart: unless-stopped
+    shm_size: 2gb

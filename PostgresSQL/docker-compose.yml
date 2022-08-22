@@ -12,6 +12,8 @@ services:
       TZ: America/Caracas
     ports:
       - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql
   # pgadmin:
   #   container_name: pgadmin4_container
   #   image: dpage/pgadmin4

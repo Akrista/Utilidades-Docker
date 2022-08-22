@@ -4,8 +4,8 @@ services:
   fireflyiii:
     image: jc5x/firefly-iii:latest
     volumes:
-      - /home/akrista/FireFly3/firefly_iii_export:/var/www/firefly-iii/storage/export
-      - /home/akrista/FireFly3/firefly_iii_upload:/var/www/firefly-iii/storage/upload
+      - ./firefly_iii_export:/var/www/firefly-iii/storage/export
+      - ./firefly_iii_upload:/var/www/firefly-iii/storage/upload
     env_file: .env
     ports:
       - 8003:8080
@@ -13,17 +13,17 @@ services:
       - db
     links:
       - db:db
-  db:
-    image: yobasystems/alpine-mariadb:latest
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=yes
-      - MYSQL_USER=firefly
-      - MYSQL_PASSWORD=firefly_password
-      - MYSQL_DATABASE=firefly
-    volumes:
-      - db:/var/lib/mysql
+#   db:
+#     image: yobasystems/alpine-mariadb:latest
+#     environment:
+#       - MYSQL_RANDOM_ROOT_PASSWORD=yes
+#       - MYSQL_USER=firefly
+#       - MYSQL_PASSWORD=firefly_password
+#       - MYSQL_DATABASE=firefly
+#     volumes:
+#       - db:/var/lib/mysql
 
-volumes:
-  firefly_iii_export:
-  firefly_iii_upload:
-  db:
+# volumes:
+#   firefly_iii_export:
+#   firefly_iii_upload:
+#   db:

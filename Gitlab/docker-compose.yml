@@ -1,0 +1,16 @@
+version: "3"
+services:
+  prometheus:
+    image: gitlab/gitlab-ce
+    container_name: gitlab
+    environment:
+      - TZ=America/Caracas
+    volumes:
+      - ./gitlab_config:/etc/gitlab
+      - ./gitlab_logs:/var/log/gitlab
+      - ./gitlab_data:/var/opt/gitlab
+    ports:
+      - 2022:22
+      - 80:80
+      - 443:443
+    restart: unless-stopped

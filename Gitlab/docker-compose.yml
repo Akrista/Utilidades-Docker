@@ -3,16 +3,22 @@ services:
   gitlab:
     image: gitlab/gitlab-ce
     container_name: gitlab
-    hostname: "your.hostname.com:port"
+    # hostname: "your.hostname.com:port"
     environment:
       - TZ=America/Caracas
+      - GITLAB_HOST=your.hostname.com:port
+      - GITLAB_ROOT_PASSWORD=yourstrongpassword
+      # - EXTERNAL_URL=http://your.hostname.com:port
+      # - GITLAB_EMAIL_DISPLAY_NAME=emaildisplayname
+      # - GITLAB_EMAIL_FROM=emailfrom
+      # - DATABASE_URL=postgresql://localhost/blog_development
     volumes:
       - ./gitlab_config:/etc/gitlab
       - ./gitlab_logs:/var/log/gitlab
       - ./gitlab_data:/var/opt/gitlab
     ports:
-      - 2022:22
-      - 80:80
-      - 443:443
+      - "2022:22"
+      - "80:80"
+      - "443:443"
     restart: unless-stopped
     shm_size: 2gb

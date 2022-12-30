@@ -1,20 +1,66 @@
 version: '3'
 services:
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana-oss
     # image: grafana/grafana-oss
-    container_name: grafana
+    container_name: grafana-oss
     environment:
       - TZ=America/Caracas
-      # - UMASK_SET=022
+      # Grafana Configs
+      # [Server]
+      #- GF_SERVER_PROTOCOL=http
+      #- GF_SERVER_DOMAIN=your.domain.com
+      #- GF_SERVER_ROUTER_LOGGING=trueorfalse
+      #- GF_SERVER_CERT_FILE=/YOUR/PATH/TO/CERT
+      #- GF_SERVER_CERT_KEY=/YOUR/PATH/TO/KEY
+      # [Users]
+      - GF_USERS_DEFAULT_THEME=dark
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_USERS_ALLOW_ORG_CREATE=false
+      # - GF_USERS_AUTO_ASSIGN_ORG=true
+      # - GF_USERS_AUTO_ASSIGN_ORG_ID=1
+      # - GF_USERS_AUTO_ASSIGN_ORG_ROLE=admin
+      # - GF_USERS_VERIFY_EMAIL_ENABLED=true
+      # - GF_USERS_LOGIN_HINT=true
+      # - GF_USERS_PASSWORD_HINT=true
+      - GF_USERS_DEFAULT_LANGUAGE=es-MX
+      - GF_USERS_USER_INVITE_MAX_LIFETIME_DURATION=48h
+      # - GF_USERS_HIDDEN_USERS=admin,user1,user2
+      # - GF_USERS_VIEWERS_CAN_EDIT=true
+      # - GF_USERS_EDITORS_CAN_ADMIN=true
+      # [Database]
+      - GF_DATABASE_TYPE=postgres
+      - GF_DATABASE_HOST=hostname:port
+      - GF_DATABASE_NAME=grafana
+      - GF_DATABASE_USER=user
+      - GF_DATABASE_PASSWORD=password
+      - GF_DATABASE_SSL_MODE=disable
+      # - GF_DATABASE_LOQ_QUERIES=trueorfalse
+      # [Analytics]
+      - GF_ANALYTICS_REPORTING_ENABLED=false
+      - GF_ANALYTICS_CHECK_FOR_UPDATES=true
+      - GF_ANALYTICS_CHECK_FOR_PLUGINS_UPDATES=true
+      # - GF_ANALYTICS_GOOGLE_ANALYTICS_UA_ID=UA-XXXXX-X
+      # - GF_ANALYTICS_GOOGLE_ANALYTICS_4_ID=G-XXXXX
+      # - GF_ANALYTICS_GOOGLE_TAG_MANAGER_ID=GTM-XXXXX
+      # [Security]
+      # Default user and passwd admin:admin
+      # - GF_SECURITY_ADMIN_USER=admin
+      # - GF_SECURITY_ADMIN_PASSWORD=admin
+      # - GF_SECURITY_ADMIN_EMAIL=admin@email.com
+      # - GF_SECURITY_SECRET_KEY=secretkey
+      # - GF_SECURITY_DISABLE_GRAVATAR=trueorfalse
+      # - GF_SECURITY_COOKIE_SECURE=trueorfalse
+      # - GF_SECURITY_COOKIE_SAMESITE=trueorfalse
+      # - GF_SECURITY_ALLOW_EMBEDDING=trueorfalse
+      # [Plugins]
       # - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
       # other plugins:
       # redis-datasource,natel-discrete-panel,doitintl-bigquery-datasource,briangann-gauge-panel,vonage-status-panel,jdbranham-diagram-panel,agenty-flowcharting-panel,yesoreyeram-boomtable-panel
     ports:
       - 3000:3000
-    user: "1000"
-    volumes:
-      - ./var-grafana:/var/lib/grafana
+    # [Volumes] You need to set the user, check documentation, i prefer not to use volumes
+    # user: "root"
+    # volumes:
+    #   - ./var-grafana:/var/lib/grafana
     restart: unless-stopped
-
-# Default user and passwd admin:admin

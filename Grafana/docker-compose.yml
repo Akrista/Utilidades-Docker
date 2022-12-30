@@ -1,16 +1,20 @@
-version: "2"
+version: '3'
 services:
   grafana:
     image: grafana/grafana
+    # image: grafana/grafana-oss
     container_name: grafana
     environment:
       - TZ=America/Caracas
-      - UMASK_SET=022
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+      # - UMASK_SET=022
+      # - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+      # other plugins:
+      # redis-datasource,natel-discrete-panel,doitintl-bigquery-datasource,briangann-gauge-panel,vonage-status-panel,jdbranham-diagram-panel,agenty-flowcharting-panel,yesoreyeram-boomtable-panel
     ports:
       - 3000:3000
-    user: 1000:1000
+    user: "1000"
     volumes:
-      - /home/$USER/Grafana:/var/lib/grafana
+      - ./var-grafana:/var/lib/grafana
     restart: unless-stopped
+
 # Default user and passwd admin:admin

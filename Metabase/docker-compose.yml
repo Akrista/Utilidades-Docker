@@ -4,7 +4,7 @@ services:
     image: metabase/metabase:latest
     container_name: metabase
     ports:
-      - 3005:3000
+      - ${APP_PORT}
     environment:
       - TZ=${APP_TZ}
       - MB_DB_TYPE=${APP_DB_TYPE}

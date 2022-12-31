@@ -6,12 +6,12 @@ services:
     image: postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: test_db
-      TZ: America/Caracas
+      POSTGRES_USER: ${APP_DB_USER}
+      POSTGRES_PASSWORD: ${APP_DB_PASSWORD}
+      POSTGRES_DB: ${APP_DB_NAME}
+      TZ: ${APP_TZ}
     ports:
-      - "5432:5432"
+      - ${APP_DB_PORTS}
     volumes:
       - ./data:/var/lib/postgresql
   # pgadmin:

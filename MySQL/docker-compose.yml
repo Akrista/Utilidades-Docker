@@ -5,11 +5,11 @@ services:
     image: mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      TZ: America/Caracas
+      MYSQL_ROOT_PASSWORD: ${APP_DB_ROOT_PASS}
+      MYSQL_USER: ${APP_DB_USER}
+      MYSQL_PASSWORD: ${APP_DB_USER_PASS}
+      TZ: ${APP_TZ}
     ports:
-      - "3306:3306"
+      - ${APP_PORT}
     volumes:
       - ./data:/var/lib/mysql

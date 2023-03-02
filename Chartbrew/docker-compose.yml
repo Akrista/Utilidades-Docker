@@ -1,0 +1,21 @@
+version: "3"
+services:
+  chartbrew:
+    image: razvanilin/chartbrew
+    container_name: chartbrew
+    ports:
+      - ${CB_PORT}
+      - ${CB_API_PORT}
+    environment:
+      - TZ=${CB_TZ}
+      - CB_SECRET=${CB_SECRET}
+#      - CB_DB_DIALECT=${CB_DB_DIALECT}
+      - CB_DB_NAME=${CB_DB_NAME}
+      - CB_DB_PORT=${CB_DB_PORT}
+      - CB_DB_HOST=${CB_DB_HOST}
+      - CB_DB_USERNAME=${CB_DB_USER}
+      - CB_DB_PASSWORD=${CB_DB_PASS}
+      - CB_API_HOST=${CB_API_HOST}
+      - CB_API_PORT=${CB_API_PORT}
+      - REACT_APP_CLIENT_HOST=${CB_REACT_APP_CLIENT_HOST}
+      - REACT_APP_API_HOST=${CB_REACT_APP_API_HOST}

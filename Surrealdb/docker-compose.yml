@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  surrealdb:
+    container_name: surrealdb
+    image: surrealdb/surrealdb:latest
+    command: start --log debug --user ${SDB_USER} --pass ${SDB_PASS} file://database.db
+    ports:
+      - ${SDB_PORT}
+    volumes:
+      - ./data/database.db:/database.db
+    restart: unless-stopped

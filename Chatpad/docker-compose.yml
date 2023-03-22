@@ -1,0 +1,6 @@
+version: "3"
+services:
+  web:
+    image: itsnoted/chatpad:0.1
+    ports:
+      - "8200:80"

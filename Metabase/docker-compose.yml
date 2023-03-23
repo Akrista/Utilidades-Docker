@@ -13,3 +13,4 @@ services:
       - MB_DB_HOST=${APP_DB_HOST}
       - MB_DB_USER=${APP_DB_USER}
       - MB_DB_PASS=${APP_DB_PASS}
+    restart: unless-stopped

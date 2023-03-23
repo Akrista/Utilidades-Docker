@@ -4,3 +4,4 @@ services:
     image: itsnoted/chatpad:0.1
     ports:
       - "8200:80"
+    restart: unless-stopped

@@ -1,0 +1,11 @@
+version: "3"
+services:
+  madresteam:
+    image: ghcr.io/akrista/madresteam:latest
+    shm_size: 8gb
+    privileged: true
+    ports:
+      - "5880:5800"
+    volumes:
+      - "./steam:/steam"
+    restart: unless-stopped

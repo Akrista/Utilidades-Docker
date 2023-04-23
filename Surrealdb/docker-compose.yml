@@ -10,3 +10,5 @@ services:
     volumes:
       - ./data/database.db:/database.db
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

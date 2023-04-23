@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  traefik:
+    image: "traefik"
+    container_name: "traefik"
+    ports:
+      - "443:443"
+      # (Optional) Expose Dashboard
+      - "8085:8080" # Don't do this in production!
+      # Ports for apps i use, this should change later
+      - "9117:9117"
+      - "7878:7878"
+      - "8989:8989"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config/traefik.yml:/etc/traefik/traefik.yml
+      - ./data:/etc/traefik
+      - ./certs:/le
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`an.ip.for.host`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      # - "traefik.http.routers.heimdall.tls=true"
+      # - "traefik.http.routers.traefik.tls.certresolver=leresolver"
+      - "traefik.http.routers.traefik.entrypoints=traefikdash"
+      # - "traefik.http.routers.traefik.middlewares=authtraefik"
+      # - "traefik.http.middlewares.authtraefik.basicauth.users=admin:password"
+    restart: unless-stopped
+    networks:
+      - public
+
+networks:
+  public:

@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  organizr:
+    image: organizr/organizr
+    container_name: organizr
+    restart: unless-stopped
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - fpm=false
+      - branch=v2-master #opcional
+    volumes:
+      - ./config:/config
+    ports:
+      - "8070:80"
+

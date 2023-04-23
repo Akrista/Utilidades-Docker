@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    #   - 9443:9443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+      - ./data:/data
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.portainer.rule=Host(`your.ip.for.traefik`)"
+#       - "traefik.http.routers.portainer.entrypoints=portainer"
+#       - "traefik.http.routers.portainer.tls=true"
+#     networks:
+#       - traefik_traefik
+# networks:
+#   traefik_traefik:
+#     external: true
